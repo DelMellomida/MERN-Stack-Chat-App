@@ -1,0 +1,33 @@
+# OS-related
+.DS_Store
+Thumbs.db
+
+# Log files & swap files
+*.log
+*.swp
+*.swo
+
+# Environment variables (for secrets like DB URI, JWT keys, etc.)
+server/.env
+server/.env.local
+
+# Node modules
+client/node_modules/
+server/node_modules/
+
+# Optional: lock files (commented out — include if your team prefers consistency)
+# client/package-lock.json
+# server/package-lock.json
+
+# Vite (React build output)
+client/dist/
+client/.vite/
+client/.cache/
+client/coverage/
+
+# Server output or logs (if you compile or store logs)
+server/dist/
+server/logs/
+
+# MongoDB dump folder (optional)
+dump/
