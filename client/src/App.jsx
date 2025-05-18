@@ -10,9 +10,14 @@ import { useAuthStore } from "./store/useAuthStore";
 import { useEffect } from "react";
 import { Loader }  from "lucide-react";
 import { Toaster } from "react-hot-toast";
+import { themeChange } from 'theme-change';
 
 const App = () => {
   const {authUser, checkAuth, isCheckingAuth} =useAuthStore();
+
+  // useEffect(() => {
+  //   themeChange(false);
+  // }, []);
 
   useEffect(() => {
     checkAuth();
