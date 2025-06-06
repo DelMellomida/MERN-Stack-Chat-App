@@ -188,8 +188,8 @@ export const removeFriend = async (req, res) => {
 
         await Message.deleteMany({
             $or: [
-                { sender: loggedInUserId, receiver: friendId },
-                { sender: friendId, receiver: loggedInUserId }
+                { senderId: loggedInUserId, receiverId: friendId },
+                { senderId: friendId, receiverId: loggedInUserId }
             ]
         });
         
