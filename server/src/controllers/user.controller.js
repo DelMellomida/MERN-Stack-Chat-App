@@ -193,7 +193,7 @@ export const removeFriend = async (req, res) => {
             ]
         });
         
-        // const updatedFriend = await User.findById(friendId).select("-password");
+        const updatedFriend = await User.findById(friendId).select("-password");
         if (friendSocketId) {
             io.to(friendSocketId).emit("friendRemoved", {
                 updatedUser: updatedFriend,
