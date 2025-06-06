@@ -1,4 +1,5 @@
 import User from "../models/user.model.js";
+import Message from "../models/message.model.js";
 import { getReceiverSocketId, io } from "../lib/socket.js";
 
 export const editProfile = async (req, res) => {
@@ -184,6 +185,13 @@ export const removeFriend = async (req, res) => {
             friendId,
             { $pull: { friendList: loggedInUserId } }
         );
+
+        await Message.deleteMany({
+            $or: [
+                { sender: loggedInUserId, receiver: friendId },
+                { sender: friendId, receiver: loggedInUserId }
+            ]
+        });
         
         // const updatedFriend = await User.findById(friendId).select("-password");
         if (friendSocketId) {
