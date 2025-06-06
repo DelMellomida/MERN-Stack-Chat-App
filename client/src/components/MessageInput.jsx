@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 const MessageInput = () => {
     const [text, setText] = useState("");
     const [imagePreview, setImagePreview] = useState(null);
+    const [isSending, setIsSending] = useState(false);
     const fileInputRef = useRef(null);
     const { sendMessage, selectedUser } = useChatStore();
 
@@ -34,6 +35,9 @@ const MessageInput = () => {
         if (!text.trim() && !imagePreview) {
             return;
         }
+        if(isSending) return
+
+        setIsSending(true);
 
         try {
             await sendMessage({
@@ -46,6 +50,8 @@ const MessageInput = () => {
         } catch (error) {
             console.error("Error sending message:", error);
             toast.error("Failed to send message.");
+        }finally{
+            setIsSending(false);
         }
     };
   return (
@@ -92,7 +98,7 @@ const MessageInput = () => {
                     </button>
                     <button type='submit'
                         className='btn btn-sm btn-circle'
-                        disabled={!text.trim() && !imagePreview}
+                        disabled={isSending || (!text.trim() && !imagePreview)}
                     >
                         <Send size={18} />
                     </button>

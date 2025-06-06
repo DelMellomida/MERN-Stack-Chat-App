@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useChatStore } from '../store/useChatStore';
 import { useAuthStore } from '../store/useAuthStore';
 import ChatHeader from './ChatHeader';
@@ -7,12 +7,25 @@ import MessageSkeleton from './skeletons/MessageSkeleton';
 import { formatDate } from '../lib/utils';
 
 const ChatContainer = () => {
-  const { chatMessages, getMessages, selectedUser, isLoadingMessages } = useChatStore();
+  const { chatMessages, getMessages, selectedUser, isLoadingMessages, subscribeToMessages, unsubscribeFromMessages } = useChatStore();
   const { authUser } = useAuthStore();
+  const messageEndRef = useRef(null);
 
     useEffect(() => {
       getMessages(selectedUser._id);
-    }, [selectedUser._id, getMessages]);
+
+      subscribeToMessages();
+
+      return() => {
+        unsubscribeFromMessages();
+      }
+    }, [selectedUser._id, getMessages, subscribeToMessages, unsubscribeFromMessages]);
+  
+  useEffect(() => {
+    if(messageEndRef.current && chatMessages){
+      messageEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }
+  }),[chatMessages];
 
   if (isLoadingMessages) {
     return (
@@ -22,7 +35,7 @@ const ChatContainer = () => {
         <MessageInput/>
       </div>
     );
-  };
+  }
 
   return (
     <div className='flex-1 flex flex-col overflow-auto'>
@@ -31,7 +44,7 @@ const ChatContainer = () => {
       <div className='flex-1 overflow-y-auto p-4 space-y-4'>
         {chatMessages.map((message, index) => (
           <div key={message._id}
-            className={`chat ${message.senderId === authUser._id ? 'chat-end' : 'chat-start'}`}>
+            className={`chat ${message.senderId === authUser._id ? 'chat-end' : 'chat-start'}`} ref={messageEndRef}>
               <div className='chat-image avatar'>
                 <div className='size-10 rounded-full border'>
                   <img src={message.senderId === authUser._id ? authUser.profilePic || '/avatar.png' : selectedUser.profilePic || '/avatar.png'} 
