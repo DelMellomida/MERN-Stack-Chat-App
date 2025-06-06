@@ -5,6 +5,8 @@ import cloudinary from "../lib/cloudinary.js";
 
 export const signup = async (req, res) => {
 	const {fullName, email, password} = req.body;
+	const aiId = "684251b5358f99bf8284cc76";
+
 	try{
 		if(!fullName || !email || !password) return res.status(400).json({message: "All fields are required"});		
 
@@ -22,6 +24,7 @@ export const signup = async (req, res) => {
 			fullName,
 			email,
 			password: hashedPassword,
+			friendList: [aiId],
 		});
 
 		if(newUser){
@@ -33,6 +36,7 @@ export const signup = async (req, res) => {
 				fullName: newUser.fullName,
 				email: newUser.email,
 				profilePic: newUser.profilePic,
+				friendList: newUser.friendList,
 			});
 		} else {
 			return res.status(400).json({message: "Invalid user data"});

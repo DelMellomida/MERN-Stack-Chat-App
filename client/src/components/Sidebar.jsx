@@ -1,18 +1,22 @@
 import { useEffect } from 'react'
 import { useChatStore } from '../store/useChatStore'
 import { useAuthStore } from '../store/useAuthStore'
+import { useUserStore } from '../store/useUserStore'
 import SidebarSkeleton from './skeletons/SidebarSkeleton'
 import { Users } from "lucide-react"
 
 const Sidebar = () => {
   const { getUsersForSidebar, users, selectedUser, setSelectedUser, isLoadingUsers } = useChatStore()
   const { onlineUsers } = useAuthStore();
+  const { friendList } = useUserStore();
 
-  const filteredUsers = users;
+  // Only show users who are in the current user's friendList
+  const filteredUsers = users.filter(user => friendList.includes(user._id));
 
+  // Fetch sidebar users when friendList changes
   useEffect(() => {
-    getUsersForSidebar()
-  }, [getUsersForSidebar])
+    getUsersForSidebar();
+  }, [getUsersForSidebar, friendList]);
 
   if (isLoadingUsers) return <SidebarSkeleton />
 
@@ -37,7 +41,7 @@ const Sidebar = () => {
               <div className="relative mx-auto lg:mx-0">
                 <img
                   src={user.profilePic || "/avatar.png"}
-                  alt={user.name}
+                  alt={user.fullName}
                   className="size-12 object-cover rounded-full"
                 />
                 {onlineUsers.includes(user._id) && (
@@ -56,7 +60,9 @@ const Sidebar = () => {
             </button>
           ))}
           {filteredUsers.length === 0 && (
-            <div className="text-center text-zinc-500 py-4">No online users</div>
+            <div className="text-center text-zinc-500 py-4">
+              {friendList.length === 0 ? "No friends yet" : "No friends found"}
+            </div>
           )}
         </div>
       </div>

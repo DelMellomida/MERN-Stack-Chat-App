@@ -20,6 +20,11 @@ const userSchema = new mongoose.Schema(
 			type: String,
 			default: "",
 		},
+		friendList: [{
+			type: mongoose.Schema.Types.ObjectId,
+			ref: "User",
+			default: [],
+		}],
 	},
 	{	timestamps: true 	}
 );
