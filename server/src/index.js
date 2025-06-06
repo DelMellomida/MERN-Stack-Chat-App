@@ -18,7 +18,7 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 app.use(cookieParser());
 app.use(cors({
-	origin: "http://localhost:5173",
+	origin: (process.env.NODE_ENV === "production" ? "https://mern-stack-chat-app-phi.vercel.app/" : "http://localhost:5173"),
 	credentials: true,
 }));
 
