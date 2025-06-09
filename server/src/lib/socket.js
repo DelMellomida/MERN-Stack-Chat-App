@@ -14,9 +14,16 @@ const io = new Server(server, {
 });
 
 const userSocketMap = {};
+const AI_ASSISTANT_ID = "684251b5358f99bf8284cc76"; // AI Assistant's user ID
 
 export function getReceiverSocketId(userId) {
     return userSocketMap[userId] || null;
+}
+
+function emitOnlineUsers() {
+    // Always include the AI Assistant as online
+    const onlineUsers = Array.from(new Set([...Object.keys(userSocketMap), AI_ASSISTANT_ID]));
+    io.emit('getOnlineUsers', onlineUsers);
 }
 
 io.on('connection', (socket) => {
@@ -29,11 +36,12 @@ io.on('connection', (socket) => {
         console.log(`User ${userId} connected with socket ID: ${socket.id}`);
     }
 
-    io.emit('getOnlineUsers', Object.keys(userSocketMap));
+    emitOnlineUsers();
+
     socket.on('disconnect', () => {
         console.log('User disconnected:', socket.id);
         delete userSocketMap[userId];
-        io.emit('getOnlineUsers', Object.keys(userSocketMap));
+        emitOnlineUsers();
     });
 });
 
