@@ -13,7 +13,7 @@ export const useAuthStore = create((set, get) => ({
     isSigningUp:false,
     isLoggingIn:false,
     isUpdatingProfile:false,
-    onlineUsers: [],
+    onlineUsers: ["684251b5358f99bf8284cc76"], 
     socket: null,
 
     isCheckingAuth:true,
