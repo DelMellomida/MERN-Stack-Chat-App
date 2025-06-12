@@ -40,7 +40,7 @@ A full-featured real-time chat application built with the MERN stack, enhanced b
 
 ```bash
 # Clone the repository
-git clone [https://github.com/yourusername/mern-chat-ai.git](https://github.com/DelMellomida/MERN-Stack-Chat-App.git)
+git clone https://github.com/DelMellomida/MERN-Stack-Chat-App.git
 cd mern-chat-ai
 
 # Install server dependencies
